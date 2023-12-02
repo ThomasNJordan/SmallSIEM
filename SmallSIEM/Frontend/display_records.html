@@ -1,0 +1,32 @@
+<!-- display_records.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Records</title>
+</head>
+<body>
+    <h2>Displaying Records from {{ table_name }}</h2>
+
+    {% if records %}
+        <table border="1">
+            <tr>
+                {% for column in records[0] %}
+                    <th>{{ column[0] }}</th>
+                {% endfor %}
+            </tr>
+            {% for record in records %}
+                <tr>
+                    {% for value in record %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+</body>
+</html>
