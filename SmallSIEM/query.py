@@ -240,37 +240,3 @@ def perform_joins():
         if db.is_connected():
             cursor.close()
             db.close()
-
-# TOD: Implement three special operations based on needs
-
-if __name__ == "__main__":
-    # Delete this function when not testing 
-    # new behavior
-    print("Main Function: ")
-
-    # Display all Location Records
-    # display_records("Location")
-
-    # Query records with field and value 
-    # (Look in field, search by value)
-    #query_with_filters("User", "Name", "John%")
-
-    # Create a new record
-    #create_new_record("User", (101, "Alice"))
-
-    # Delete a record
-    # delete_records("User", "UserID = 101")
-
-    # Update a record
-    #update_records("EventLogs", "Severity", 2, "EventLogID = 1000")
-
-    # Perform a transaction
-    # create_new_record_transaction("User", (101, "Alice"))
-
-    # Output a CSV of a given table
-    #generate_report("User", "user_report")
-
-    # Function to abstract group_by()
-    # perform_aggregation("COUNT(*)", "Location", "LocationID")
-
-
