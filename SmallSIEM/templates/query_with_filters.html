@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Query Records with Filters</title>
+</head>
+<body>
+    <h1>Query Records with Filters</h1>
+
+    <table border="1">
+        <tr>
+            <!-- Assuming your records are a list of dictionaries where keys are column names -->
+            {% for key in records[0].keys() %}
+                <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        {% for record in records %}
+            <tr>
+                {% for value in record.values() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Create New Record for Table: {{ table_name }}</h2>
+    <form action="/create_new_record" method="post">
+        <label for="table_name">Table Name:</label>
+        <input type="text" id="table_name" name="table_name" required value="{{ table_name }}">
+        <br>
+        {% for column in columns %}
+            <label for="{{ column }}">{{ column }}:</label><br>
+            <input type="text" id="{{ column }}" name="values[]" required><br>
+        {% endfor %}
+        <br>
+        <button type="submit">Create New Record</button>
+    </form>
+    {% if create_new_record_success %}
+        <h2>New record inserted successfully.</h2>
+    {% endif %}
+</body>
+</html>
