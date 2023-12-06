@@ -18,11 +18,11 @@ def display_records(table_name):
 
         query = f"SELECT * FROM {table_name};"
         cursor.execute(query)
-        records = cursor.fetchall()
+        
+        columns = [column[0] for column in cursor.description]
+        records = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-        # Display records
-        for record in records:
-            print(record)
+        return records
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
