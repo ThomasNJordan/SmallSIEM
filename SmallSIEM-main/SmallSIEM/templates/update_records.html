@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Records</title>
+</head>
+<body>
+    <h2>Update Records</h2>
+    <form action="/update_records" method="post">
+        <label for="table_name">Table Name:</label>
+        <input type="text" id="table_name" name="table_name" required>
+        <br>
+        <label for="column_name">Column Name:</label>
+        <input type="text" id="column_name" name="column_name" required>
+        <br>
+        <label for="new_value">New Value:</label>
+        <input type="text" id="new_value" name="new_value" required>
+        <br>
+        <label for="condition">Condition:</label>
+        <input type="text" id="condition" name="condition" required>
+        <br>
+        <button type="submit">Update Records</button>
+    </form>
+</body>
+</html>
