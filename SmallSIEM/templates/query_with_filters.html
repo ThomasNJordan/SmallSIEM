@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Query Records with Filters</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtered Records</title>
 </head>
 <body>
-    <h1>Query Records with Filters</h1>
 
+<h2>Filtered Records</h2>
+
+{% if records %}
     <table border="1">
-        <tr>
-            <!-- Assuming your records are a list of dictionaries where keys are column names -->
-            {% for key in records[0].keys() %}
-                <th>{{ key }}</th>
-            {% endfor %}
-        </tr>
-        {% for record in records %}
+        <thead>
             <tr>
-                {% for value in record.values() %}
-                    <td>{{ value }}</td>
-                {% endfor %}
+                {% if records[0] is mapping %}
+                    {% for field in records[0].keys() %}
+                        <th>{{ field }}</th>
+                    {% endfor %}
+                {% else %}
+                    <th>Record</th>
+                {% endif %}
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% if records[0] is mapping %}
+                {% for record in records %}
+                    <tr>
+                        {% for field, value in record.items() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td>
+                        {% for item in records[0] %}
+                            {{ item }}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
     </table>
+{% else %}
+    <p>No records found for the specified filters.</p>
+{% endif %}
 
 </body>
 </html>
