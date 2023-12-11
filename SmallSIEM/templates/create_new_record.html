@@ -35,20 +35,18 @@
     </style>
 </head>
 <body>
-    <h2>Create New Record for Table: {{ table_name }}</h2>
+    <h2>Create New Record for Table: {{ selected_table }}</h2>
     <form action="/create_new_record" method="post">
-        <label for="table_name">Table Name:</label>
-        <input type="text" id="table_name" name="table_name" required value="{{ table_name }}">
-        <br>
+        <input type="hidden" name="table_name" value="{{ selected_table }}">
+        
         {% for column in columns %}
-            <label for="{{ column }}">{{ column }}:</label><br>
-            <input type="text" id="{{ column }}" name="values[]" required><br>
+            <div class="flex mb-4">
+                <label class="mr-2">{{ column }}:</label>
+                <input type="text" name="{{ column }}" required class="border border-green-500 px-2 py-1">
+            </div>
         {% endfor %}
-        <br>
-        <button type="submit">Create New Record</button>
+        
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Add Record</button>
     </form>
-    {% if create_new_record_success %}
-        <h2>New record inserted successfully.</h2>
-    {% endif %}
 </body>
 </html>
