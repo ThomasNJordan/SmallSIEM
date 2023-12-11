@@ -1,4 +1,5 @@
 import mysql.connector
+from sqlalchemy import create_engine, inspect
 import csv
 
 # Function to connect to MySQL database
@@ -33,18 +34,23 @@ def display_records(table_name):
             db.close()
 
 # Function to query with parameters/filters
-def query_with_filters(table_name, column, value):
+def query_database_with_filters(table_name, column, value):
     try:
         db = connect_to_db()
         cursor = db.cursor()
 
-        query = f"SELECT * FROM {table_name} WHERE {column} LIKE '{value}';"
-        cursor.execute(query)
+        # Using parameterized query to prevent SQL injection
+        query = f"SELECT * FROM {table_name} WHERE {column} LIKE %s;"
+        cursor.execute(query, (value,))
+
         records = cursor.fetchall()
 
         # Display filtered records
+        result = []
         for record in records:
-            print(record)
+            result.append(record)
+
+        return result
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -53,6 +59,7 @@ def query_with_filters(table_name, column, value):
         if db.is_connected():
             cursor.close()
             db.close()
+
 
 # Function to create a new record
 def create_new_record(table_name, values):
@@ -204,7 +211,7 @@ def use_subquery():
 
         # Display records from subquery
         for record in records:
-            print(record)
+            return record
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -231,7 +238,7 @@ def perform_joins():
 
         # Display records from join
         for record in records:
-            print(record)
+            return record
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -240,3 +247,16 @@ def perform_joins():
         if db.is_connected():
             cursor.close()
             db.close()
+
+def get_column_names(table_name):
+    try:
+        engine = create_engine("mysql+mysqlconnector://root:CPSC408!@localhost/SIEM_DB")
+        inspector = inspect(engine)
+        columns = inspector.get_columns(table_name)
+        column_names = [column["name"] for column in columns]
+        return column_names
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return []
+    
