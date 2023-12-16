@@ -2,49 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filtered Records</title>
+    <title>SmallSIEM - Display Records</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-black text-green-500 font-mono">
 
-<h2>Filtered Records</h2>
+<div class="container mx-auto p-4 text-center">
+    <h1 class="text-4xl font-bold mb-8">SmallSIEM - Display Records</h1>
 
-{% if records %}
-    <table border="1">
-        <thead>
-            <tr>
-                {% if records[0] is mapping %}
-                    {% for field in records[0].keys() %}
-                        <th>{{ field }}</th>
-                    {% endfor %}
-                {% else %}
-                    <th>Record</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% if records[0] is mapping %}
-                {% for record in records %}
+    <div class="mt-4">
+        <h2 class="text-2xl font-bold mb-4">Filtered Records</h2>
+
+        {% if records %}
+            <table class="table-auto mx-auto mt-4 bg-gray-800 text-white">
+                <thead>
                     <tr>
-                        {% for field, value in record.items() %}
-                            <td>{{ value }}</td>
-                        {% endfor %}
+                        {% if records[0] is mapping %}
+                            {% for field in records[0].keys() %}
+                                <th class="border px-4 py-2">{{ field }}</th>
+                            {% endfor %}
+                        {% else %}
+                            <th class="border px-4 py-2">Record</th>
+                        {% endif %}
                     </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td>
-                        {% for item in records[0] %}
-                            {{ item }}
+                </thead>
+                <tbody>
+                    {% if records[0] is mapping %}
+                        {% for record in records %}
+                            <tr>
+                                {% for field, value in record.items() %}
+                                    <td class="border px-4 py-2">{{ value }}</td>
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </td>
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
-{% else %}
-    <p>No records found for the specified filters.</p>
-{% endif %}
+                    {% else %}
+                        <tr>
+                            <td class="border px-4 py-2">
+                                {% for item in records[0] %}
+                                    {{ item }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-white">No records found for the specified filters.</p>
+        {% endif %}
+
+    </div>
+</div>
 
 </body>
 </html>
