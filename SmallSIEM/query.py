@@ -196,22 +196,21 @@ def generate_report(table_name, output_name):
             cursor.close()
             db.close()
 
-# Function to perform aggregation/group-by
-def perform_aggregation(operation, table, value):
+def perform_aggregation(table, value):
     try:
         db = connect_to_db()
-        cursor = db.cursor()
+        cursor = db.cursor(dictionary=True)  # Use dictionary cursor to get records as dictionaries
 
-        query = f"SELECT {operation}, {value} FROM {table} GROUP BY {value};"
+        query = f"SELECT *, {value} FROM {table} GROUP BY {value};"
         cursor.execute(query)
         records = cursor.fetchall()
 
-        # Display aggregated records
-        for record in records:
-            print(record)
+        # Return aggregated records
+        return records
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
+        return None
 
     finally:
         if db.is_connected():
