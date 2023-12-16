@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Record</title>
+    <!-- Add CSS styles here -->
+</head>
+<body>
+    <h2>Create New Record for Table: {{ selected_table }}</h2>
+    <form action="/create_new_record" method="post">
+        <input type="hidden" name="selected_table" value="{{ selected_table }}">
+        
+        {% for column in columns %}
+            <label>{{ column }}:</label>
+            <input type="text" name="{{ column }}" required><br>
+        {% endfor %}
+
+        <button type="submit">Create Record</button>
+    </form>
+
+    <!-- Display message -->
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+</body>
+</html>
