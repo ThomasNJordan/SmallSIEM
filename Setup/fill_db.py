@@ -91,7 +91,7 @@ user_query = "INSERT INTO User (Name) VALUES (%s)"
 cursor.executemany(user_query, users_data)
 
 # Insert data into IPAddress table
-ip_query = "INSERT INTO IPAddress (DNS, Version, UserID) VALUES (%s, %s, %s)"
+ip_query = "INSERT INTO IPAddress (IPAddress, DNS, Version, UserID) VALUES (%s, %s, %s, %s)"
 cursor.executemany(ip_query, ip_addresses_data)
 
 # Insert data into EventLogs table
