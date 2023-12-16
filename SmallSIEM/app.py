@@ -71,7 +71,7 @@ def delete_records_html():
     except Exception as e:
         # In case of an error, flash an error message
         flash(f"Error: {e}", 'error')
-        return redirect(url_for('display_records_html', table_name=table_name, condition=condition))
+        return render_template('index.html')
 
 # Add route for updating records
 @app.route('/update_records', methods=['POST'])
@@ -81,7 +81,8 @@ def update_records_html():
     value = request.form['value']
     condition = request.form['condition']
     update_records(table_name, column, value, condition)
-    return redirect(url_for('display_records_html', table_name=table_name))
+    flash('Records updated successfully!', 'success')  # Flash message for success
+    return render_template('index.html')
 
 # Add route for creating a new record within a transaction
 @app.route('/create_new_record_transaction', methods=['POST', 'GET'])
