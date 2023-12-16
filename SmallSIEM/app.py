@@ -84,16 +84,33 @@ def update_records_html():
     flash('Records updated successfully!', 'success')  # Flash message for success
     return render_template('index.html')
 
-# Add route for creating a new record within a transaction
 @app.route('/create_new_record_transaction', methods=['POST', 'GET'])
 def create_new_record_transaction_html():
     if request.method == 'GET':
-        return render_template('create_record_transaction_form.html')  # Render form for adding new record
+        return render_template('index.html')
     elif request.method == 'POST':
-        table_name = request.form['table_name']
-        values = [request.form['value1'], request.form['value2'], ...]  # Get values from the form
-        create_new_record_transaction(table_name, values)  # Call function to create a new record within a transaction
-        return "New record added successfully within a transaction!"  # Return success message
+        try:
+            table_name = request.form['table_name']
+            columns = get_columns(table_name)
+
+            # Get the number of columns
+            max_values = len(columns)
+
+            # Get values from the form, handle missing or empty fields with 'None'
+            values = [
+                request.form[f'value{i}'] if request.form.get(f'value{i}') != '' else None
+                for i in range(1, 3)  # Assuming latitude and longitude are first two values
+            ]
+
+            # Fill remaining values with 'None'
+            values.extend([None] * (max_values - len(values)))
+
+            create_new_record_transaction(table_name, values)
+            flash('New record added successfully within a transaction!', 'success')
+            return render_template('index.html')
+        except Exception as e:
+            flash(f"Error: {e}", 'error')
+            return render_template('index.html')
 
 # Add route for generating reports and exporting as CSV
 @app.route('/generate_report', methods=['POST'])

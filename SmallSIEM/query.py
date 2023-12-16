@@ -152,6 +152,7 @@ def create_new_record_transaction(table_name, values):
         # Start the transaction
         db.start_transaction()
 
+        # Generating placeholders dynamically based on the number of values
         placeholders = ', '.join(['%s'] * len(values))
         query = f"INSERT INTO {table_name} VALUES ({placeholders});"
         cursor.execute(query, values)
