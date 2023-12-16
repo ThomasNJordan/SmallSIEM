@@ -2,6 +2,8 @@
 
 Thomas Jordan, Thomas Kim, Ewan Shen
 
+References: StackOverflow regarding linking HTML pages and flask implementation among other imports and issues. ChatGPT for helping us debug our code.
+
 # SmallSIEM
 A simple SIEM written in Python using a MySQL backend.
 SmallSIEM supports the storage and interactions between users, IP addresses, locations, and events
