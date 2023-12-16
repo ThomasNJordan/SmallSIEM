@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for  # <-- Add this line
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from query import *
 
 app = Flask(__name__, template_folder='templates')
-
+# To enable cookies
+app.secret_key = b'CPSC408!'
 
 @app.route('/get_tables', methods=['GET'])
 def get_tables():
@@ -12,44 +13,7 @@ def get_tables():
 # Route for the main dashboard
 @app.route('/')
 def dashboard():
-    content = "Hello, World!"
-    return render_template('index.html', content=content)
-
-
-# Function to get all tables from the database
-def get_all_tables():
-    try:
-        db = connect_to_db()
-        cursor = db.cursor(dictionary=True)
-
-        query = "SHOW TABLES;"
-        cursor.execute(query)
-
-        # Print the raw result to identify the correct key
-        raw_result = cursor.fetchall()
-        print("Raw result:", raw_result)
-
-        # Modify the key based on the actual structure of the result
-        tables = [table['Tables_in_siem_db'] for table in raw_result]
-
-        print("Tables:", tables)  # Add this line
-
-        return tables
-
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-
-    finally:
-        if db.is_connected():
-            cursor.close()
-            db.close()
-
-
-
-@app.route('/')
-def index():
-    content = "Hello, World!"
-    return render_template('index.html', content=content)
+    return render_template('index.html', messages=get_flashed_messages())
 
 @app.route('/display_records', methods=['POST'])
 def display_records_html():
@@ -63,38 +27,51 @@ def query_with_filters_route():
     column = request.form['column']
     value = request.form['value']
     records = query_database_with_filters(table_name, column, value)
-    return render_template('display_records.html', table_name=table_name, records=records)
+    return render_template('query_with_filters.html', table_name=table_name, records=records)
 
+'''
+The following code is for creating a new record
+'''
+@app.route('/create_new_record', methods=['POST'])
+def create_new_record_get():
+    try:
+        table_name = request.form['table_name']
+        columns = get_columns(table_name)
+        return render_template('create_new_record.html', table_name=table_name, columns=columns)
+    
+    except Exception as e:
+        print(f"Exception: {e}")
+        return "An error occurred while fetching column names."
 
+@app.route('/add_record', methods=['POST'])
+def add_record():
+    try:
+        table_name = request.form['table_name']
+        values = [request.form[column] for column in request.form if column != 'table_name']
+        
+        create_new_record(table_name, values)  # Call the function to create a new record in query.py
+        
+        flaflash('New record added successfully!', 'create')
+        return render_template('index.html')
 
-@app.route('/create_new_record', methods=['POST', 'GET'])
-def create_new_record_route():
-    if request.method == 'GET':
-        # Render form for adding new record
-        return render_template('create_record_form.html')
-    elif request.method == 'POST':
-        try:
-            table_name = request.form['table_name']
-            # Print form data for debugging
-            print(f"Received form data for table '{table_name}': {request.form}")
+    except Exception as e:
+        print(f"Exception: {e}")
+        return "An error occurred while adding a new record."
+####
 
-            # Retrieve values dynamically based on the number of columns
-            values = [request.form[column] for column in request.form if column != 'table_name']
-            create_new_record(table_name, values)  # Call function to create a new record
-            return redirect(url_for('create_new_record_route'))  # Redirect back to the create form page
-
-        except Exception as e:
-            # Print the exception for debugging
-            print(f"Exception: {e}")
-            return "An error occurred while processing the form."
-
-
-@app.route('/delete_records', methods=['POST'])
+@app.route('/delete_records', methods=['GET', 'POST'])
 def delete_records_html():
-    table_name = request.form['table_name']
-    condition = request.form['condition']
-    delete_records(table_name, condition)
-    return redirect(url_for('display_records_html', table_name=table_name))
+    try:
+        table_name = request.form['table_name']
+        condition = request.form['condition']
+        delete_records(table_name, condition)
+
+        flash('Record deleted successfully!', 'delete')
+        return render_template('index.html')
+    except Exception as e:
+        # In case of an error, flash an error message
+        flash(f"Error: {e}", 'error')
+        return redirect(url_for('display_records_html', table_name=table_name, condition=condition))
 
 # Add route for updating records
 @app.route('/update_records', methods=['POST'])

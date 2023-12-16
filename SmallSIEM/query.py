@@ -11,6 +11,25 @@ def connect_to_db():
         database="SIEM_DB"
     )
 
+# Function to get columns from a table
+def get_columns(table_name):
+    try:
+        db = connect_to_db()
+        cursor = db.cursor()
+
+        columns = display_records(table_name)
+        column_names = list(columns[0].keys()) if columns else []
+
+        return column_names
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    finally:
+        if db.is_connected():
+            cursor.close()
+            db.close()
+
 # Function to display records from a table
 def display_records(table_name):
     try:
@@ -59,7 +78,6 @@ def query_database_with_filters(table_name, column, value):
         if db.is_connected():
             cursor.close()
             db.close()
-
 
 # Function to create a new record
 def create_new_record(table_name, values):
