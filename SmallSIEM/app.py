@@ -120,14 +120,17 @@ def generate_report_html():
     generate_report(table_name, output_name)
     return f"Report '{table_name}_report.csv' generated successfully."
 
-# Add route for performing aggregation/group-by
 @app.route('/perform_aggregation', methods=['POST'])
 def perform_aggregation_html():
-    operation = request.form['operation']
-    table_name = request.form['table_name']
-    value = request.form['value']
-    perform_aggregation(operation, table_name, value)
-    return "Aggregation performed successfully."
+    try:
+        table_name = request.form['table_name']
+        value = request.form['value']
+        records = perform_aggregation(table_name, value)
+        return render_template('display_aggregated_records.html', table_name=table_name, records=records)
+    
+    except Exception as e:
+        print(f"Exception: {e}")
+        return "An error occurred while performing aggregation."
 
 # Add route for using subqueries
 @app.route('/use_subquery', methods=['GET'])
