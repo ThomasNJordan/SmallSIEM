@@ -13,7 +13,7 @@ def get_tables():
 # Route for the main dashboard
 @app.route('/')
 def dashboard():
-    return render_template('index.html', messages=get_flashed_messages())
+    return render_template('index.html')
 
 @app.route('/display_records', methods=['POST'])
 def display_records_html():
@@ -51,7 +51,7 @@ def add_record():
         
         create_new_record(table_name, values)  # Call the function to create a new record in query.py
         
-        flaflash('New record added successfully!', 'create')
+        flash('New record added successfully!', 'create')
         return render_template('index.html')
 
     except Exception as e:
@@ -143,7 +143,6 @@ def use_subquery_html():
 def perform_joins_html():
     perform_joins()
     return "Joins across at least 3 tables performed successfully."
-
 
 if __name__ == "__main__":
     app.run(debug=True)
