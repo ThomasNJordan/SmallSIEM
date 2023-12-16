@@ -14,8 +14,7 @@ SQL File in Setup
 ## Installation
 To setup the database, run:
 - `pip install -r requirements.txt`
-- `mysql -u root -p SIEM_DB < setup.sql`
-- `python3 fill_db.py`
+- `mysql -u root -p < Setup/setup.sql`
+- `python3 Setup/fill_db.py`
 Then to setup the webapp:
-
-- `python3 app.py`
+- `python3 SmallSIEM/app.py`

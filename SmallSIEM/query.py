@@ -1,5 +1,4 @@
 import mysql.connector
-from sqlalchemy import create_engine, inspect
 import csv
 
 # Function to connect to MySQL database
@@ -265,16 +264,3 @@ def perform_joins():
         if db.is_connected():
             cursor.close()
             db.close()
-
-def get_column_names(table_name):
-    try:
-        engine = create_engine("mysql+mysqlconnector://root:CPSC408!@localhost/SIEM_DB")
-        inspector = inspect(engine)
-        columns = inspector.get_columns(table_name)
-        column_names = [column["name"] for column in columns]
-        return column_names
-
-    except Exception as e:
-        print(f"Error: {e}")
-        return []
-    
