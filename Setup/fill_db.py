@@ -103,7 +103,7 @@ cursor.executemany(events_query, events_data)
 
 # Insert data into UserEvents table
 user_events_query = "INSERT INTO UserEvents (UserID, EventID) VALUES (%s, %s)"
-cursor.executemany(user_events_query, user_events_data)
+cursor.executemany(user_events_query, user_events_data_list)
 
 # Commit changes and close connection
 db.commit()
