@@ -41,20 +41,22 @@ for _ in range(500):  # Generating 500 IP addresses
         ip_address = fake.ipv4()
     else:
         ip_address = fake.ipv6()
-    ip_address = fake.ipv4()  # Generating IPv4 addresses, use fake.ipv6() for IPv6
     user_id = random.randint(1, 100)  # Assuming 100 users exist
-    ip_addresses_data.append((dns, version, user_id))
+    ip_addresses_data.append((ip_address, dns, version, user_id))
 
-# Generate dummy data for EventLogs table
+# Generate dummy data for EventLogs table with weighted severity
 event_logs_data = []
 for _ in range(1000):  # Generating 1000 event logs
     start_time = fake.date_time_between(start_date='-30d', end_date='now')
     end_time = start_time + datetime.timedelta(minutes=random.randint(30, 120))
-    severity = random.randint(1, 5)
+    
+    # Weighted severity generation
+    severity = random.choices([1, 2, 3, 4, 5], weights=[50, 100, 150, 300, 400])[0]
+    
     location_id = random.randint(1, 50)  # Assuming 50 locations exist
     event_logs_data.append((start_time, end_time, severity, location_id))
 
-# Generate dummy data for Events table
+# Generate dummy data for Events table with weighted severity
 events_data = []
 severity_map = {
     1: "Very low",
@@ -69,7 +71,6 @@ for event_log in event_logs_data:
     event_type = severity_map[severity]
     event_log_id = random.randint(1, 1000)  # Assuming 1000 event logs exist
     events_data.append((event_type, event_log_id))
-
 
 # Generate dummy data for UserEvents table
 user_events_data = set()  # Using a set to store unique combinations
