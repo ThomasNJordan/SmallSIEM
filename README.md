@@ -8,6 +8,7 @@ References: StackOverflow regarding linking HTML pages and flask implementation 
 A simple SIEM written in Python using a MySQL backend.
 SmallSIEM supports the storage and interactions between users, IP addresses, locations, and events
 Implements a database using MySQL, Flask, Jinja2, HTML, Python
+SQL File in Setup
 
 
 ## Installation
